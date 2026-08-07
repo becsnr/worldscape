@@ -1,9 +1,18 @@
-import Layout from "./layout/Layout"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+
+import Layout from "./layout/Layout";
+import Highlights from "./pages/Highlights";
 
 function App() {
   return (
     <>
-      <Layout />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Highlights />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </>
   )
 }

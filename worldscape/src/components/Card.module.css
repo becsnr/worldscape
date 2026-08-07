@@ -1,0 +1,13 @@
+.card {
+    width: 400px;
+    height: 150px;
+
+    padding: 5px;
+
+    border: 1px solid palevioletred;
+    border-radius: 10px;
+}
+
+.card h3 {
+    font-size: 1rem;
+}
