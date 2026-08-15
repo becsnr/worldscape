@@ -1,6 +1,6 @@
 .card {
     width: 400px;
-    height: 150px;
+    height: 180px;
 
     padding: 5px;
 
@@ -10,4 +10,18 @@
 
 .card h3 {
     font-size: 1rem;
+}
+
+.card .covers {
+    display: flex;
+    gap: 5px;
+
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+.card img {
+    height: 120px;
+
+    /* background-color: antiquewhite; */
 }
