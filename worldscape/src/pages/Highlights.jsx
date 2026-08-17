@@ -8,6 +8,7 @@ import moviesData from "../data/movies.json";
 import { getMovies } from "../services/movies";
 import seriesData from "../data/series.json";
 import { getSeries } from "../services/series";
+import animesData from "../data/animes.json"
 
 import Card from "../components/Card";
 
@@ -15,6 +16,7 @@ function Highlights() {
     const [books, setBooks] = useState([]);
     const [movies, setMovies] = useState([]);
     const [series, setSeries] = useState([]);
+    const [animes, setAnimes] = useState([]);
 
     useEffect(() => {
         async function fetchBooks() {
@@ -43,6 +45,15 @@ function Highlights() {
         fetchSeries();
     }, []);
 
+    useEffect(() => {
+        async function fetchAnimes() {
+            const data = await getSeries(animesData);
+            setAnimes(data);
+        }
+
+        fetchAnimes();
+    }, []);
+
     //console.log(series)
 
     return (
@@ -50,7 +61,7 @@ function Highlights() {
             <Card title="livros" items={books} />
             <Card title="filmes" items={movies} />
             <Card title="séries" items={series} />
-            <Card title="animes" />
+            <Card title="animes" items={animes} />
         </div>
         
     )
