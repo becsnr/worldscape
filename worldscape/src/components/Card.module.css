@@ -22,4 +22,15 @@
 
 .card img {
     height: 120px;
+    border: 3px solid transparent;
+    border-radius: 5px;
+
+    transition: transform .2s ease, border-color .2s ease;
+
+    cursor: pointer;
+}
+
+.card img:hover {
+    border-color: palevioletred;
+    transform: scale(0.95);
 }
