@@ -9,8 +9,8 @@ export async function getMovie(title) {
 
     const data = await response.json();
 
-    console.log("FILME:", title);
-    console.log("RESPOSTA:", data);
+    // console.log("FILME:", title);
+    // console.log("RESPOSTA:", data);
 
     const movie = data.results?.[0];
 
