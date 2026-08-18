@@ -1,11 +1,14 @@
 .card {
-    width: 400px;
+    width: 100%;
+    max-width: 1000px;
     height: 180px;
 
     padding: 5px;
 
     border: 1px solid palevioletred;
     border-radius: 10px;
+
+    box-sizing: border-box;
 }
 
 .card h3 {
