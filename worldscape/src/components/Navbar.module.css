@@ -1,8 +1,37 @@
 .navbar {
     display: flex;
-    gap: 15px;
+    gap: 10px;
 }
 
 .navbar p {
+    padding: 15px 10px;
+    border-radius: 10px;
+    position: relative;
     cursor: pointer;
+
+}
+
+.navbar p::after {
+    content: "";
+    position: absolute;
+
+    bottom: 5px;
+    left: 50%;
+
+    width: 80%;
+    height: 2px;
+
+    background-color: blueviolet;
+
+    transform: translateX(-50%) scaleX(0);
+    transition: transform .3s ease;
+}
+
+.navbar p:hover {
+    color: blueviolet;
+    background-color: #a9a9a911;
+}
+
+.navbar p:hover::after {
+    transform: translateX(-50%) scaleX(1);
 }
