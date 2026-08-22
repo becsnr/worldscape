@@ -3,15 +3,18 @@
     gap: 10px;
 }
 
-.navbar p {
+.navbar .link {
     padding: 15px 10px;
     border-radius: 10px;
     position: relative;
-    cursor: pointer;
 
+    text-decoration: none;
+    color: white;
+
+    cursor: pointer;
 }
 
-.navbar p::after {
+.navbar .link::after {
     content: "";
     position: absolute;
 
@@ -27,11 +30,11 @@
     transition: transform .3s ease;
 }
 
-.navbar p:hover {
+.navbar .link:hover {
     color: blueviolet;
     background-color: #a9a9a911;
 }
 
-.navbar p:hover::after {
+.navbar .link:hover::after {
     transform: translateX(-50%) scaleX(1);
 }
