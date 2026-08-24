@@ -2,17 +2,13 @@ import styles from "./Highlights.module.css";
 
 import Card from "../components/Card";
 
-function Highlights({ books, movies, series, animes }) {
-    
-
-    //console.log(series)
-
+function Highlights({ books, movies, series, animes }){
     return (
         <div className={styles.highlights}>
-            <Card title="livros" items={books} />
-            <Card title="filmes" items={movies} />
-            <Card title="séries" items={series} />
-            <Card title="animes" items={animes} />
+            <Card title="📚 universos em páginas" items={books} />
+            <Card title="🎬 sessão da tarde pra vida" items={movies} />
+            <Card title="🍿 só mais um episódio" items={series} />
+            <Card title="🍥 otaku" items={animes} />
         </div>
         
     )

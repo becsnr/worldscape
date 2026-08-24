@@ -16,3 +16,8 @@
     border-color: blueviolet;
     border-radius: 10px;
 }
+
+.mediaCover p {
+    font-size: .8rem;
+    text-align: center;
+}
