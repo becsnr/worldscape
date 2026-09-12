@@ -1,23 +1,85 @@
 .mediaCover {
     display: grid;
-    grid-template-columns: repeat(4, 100px);
+    grid-template-columns: repeat(auto-fill, 140px);
     gap: 10px;
+    max-width: 1000px;
+}
+
+.mediaCard {
+    position: relative;
+    width: 140px;
+
+    border-radius: 10px;
+
+    transition: transform .3s ease;
+    z-index: 1;
+}
+
+.mediaCard:hover {
+    transform: scale(1.05);
+    z-index: 10;
 }
 
 .mediaCover img {
-    height: 140px;
+    width: 140px;
+    height: 200px;
 
-    border: 3px solid transparent;
+    object-fit: cover;
+    display: block;
+
+    border-radius: 10px;
 
     cursor: pointer;
 }
 
-.mediaCover img:hover {
-    border-color: blueviolet;
-    border-radius: 10px;
+.cardInfo {
+    position: absolute;
+    top: 100%;
+    left: 0;
+
+    width: 100%;
+    /* height: auto; */
+
+    padding: 15px; 
+    box-sizing: border-box;
+
+    background: #000000d9;
+    border-radius: 0 10px 10px 0;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: translateY(-10px);
+    transition: .3s ease;
+
+    pointer-events: none;
+}
+
+.mediaCard:hover .cardInfo {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
 
 .mediaCover p {
     font-size: .8rem;
     text-align: center;
+}
+
+/* DESKTOP */
+@media (min-width: 768px) {
+    .cardInfo {
+        position: absolute;
+        top: 0;
+        left: 100%;
+
+        width: 180px;
+        height: 100%;
+
+        transform: translateX(-10px);
+    }
+
+    .mediaCard:hover .cardInfo {
+        transform: translateX(0);
+    }
 }

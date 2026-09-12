@@ -4,7 +4,7 @@ import MediaPage from "../components/MediaPage";
 
 function Books({ books }) {
     return (
-        <MediaPage items={books} />
+        <MediaPage items={books} info={books.author} />
     )
 }
 

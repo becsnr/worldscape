@@ -1,13 +1,17 @@
 import styles from "./MediaPage.module.css";
 
-function MediaPage({ items }) {
+function MediaPage({ items, info }) {
     return (
         <div className={styles.mediaPage}>
             <div className={styles.mediaCover}>
                 {items?.map((item) => (
-                    <div>
+                    <div className={styles.mediaCard} key={item.title}>
                         <img src={item.image} alt={item.title} />
-                        <p>{item.title}</p>
+
+                        <div className={styles.cardInfo}>
+                            <p>{item.title}</p>
+                            <span>{info}</span>
+                        </div>
                     </div>
                 ))
                 }
