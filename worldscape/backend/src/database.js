@@ -20,14 +20,20 @@ const getUserByNick = db.prepare(`
     WHERE nick = ?
 `);
 
-const deleteUser = db.prepare(`
+const getUserById = db.prepare(`
+    SELECT id, nick FROM users
+    WHERE id = ?
+`);
+
+const deleteUserById = db.prepare(`
     DELETE FROM users
-    WHERE nick = ?
-`)
+    WHERE id = ?    
+`);
 
 module.exports = {
     db,
     addUser,
     getUserByNick,
-    deleteUser
+    getUserById,
+    deleteUserById
 };
