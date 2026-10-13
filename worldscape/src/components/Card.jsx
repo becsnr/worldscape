@@ -1,9 +1,15 @@
-import styles from "./Card.module.css"
+import styles from "./Card.module.css";
+
+import AddButton from "./AddButton";
 
 function Card({ title, items }) {
     return (
         <div className={styles.card}>
-            <h3>{title}</h3> 
+            <div className={styles.header}>
+                <h3>{title}</h3>
+
+                <AddButton />
+            </div> 
 
             <div className={styles.covers}>
                 {items?.map((item) => (

@@ -1,0 +1,40 @@
+.addButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    border: 1px solid #8080807d;
+    border-radius: 10px;
+
+    background-color: transparent;
+    color: white;
+
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 1;
+
+    cursor: pointer;
+    transition: background-color .2s ease, transform .2s ease;
+}
+
+.addButton:hover {
+    background-color: #8080807d;
+    transform: scale(1.08);
+}
+
+.addButton:focus-visible {
+    outline: 2px solid #d8c8fa;
+    outline-offset: 3px;
+}
+
+.addButton--normal {
+    width: 55px;
+    height: 45px;
+}
+
+.addButton--small {
+    width: 45px;
+    height: 35px;
+    font-size: 23px;
+}

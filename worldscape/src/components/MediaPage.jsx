@@ -1,6 +1,6 @@
 import styles from "./MediaPage.module.css";
 
-function MediaPage({ items, info }) {
+function MediaPage({ items }) {
     return (
         <div className={styles.mediaPage}>
             <div className={styles.mediaCover}>
@@ -10,7 +10,7 @@ function MediaPage({ items, info }) {
 
                         <div className={styles.cardInfo}>
                             <p>{item.title}</p>
-                            <span>{info}</span>
+                            <span>{item.author}</span>
                         </div>
                     </div>
                 ))
