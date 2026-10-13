@@ -1,6 +1,7 @@
 import styles from "./SearchModal.module.css";
 import { useState } from "react";
 import { searchBooks } from "../services/books";
+import { searchMovies } from "../services/movies";
 
 function SearchModal({ tipo, onClose }) {
     const [query, setQuery] = useState("");
@@ -21,20 +22,26 @@ function SearchModal({ tipo, onClose }) {
             setLoading(true);
             setError("");
 
-            if (tipo !== "livro") {
+            let data;
+
+            if (tipo === "livro") {
+                data = await searchBooks(query.trim());
+            } else if (tipo === "filme") {
+                data = await searchMovies(query.trim());
+            } else {
                 setResults([]);
-                setError("A pesquisa dessa categoria será concectada depois.");
+                setError("Essa categoria ainda não está disponível.");
                 return;
             }
 
-            const data = await searchBooks(query.trim());
-            console.log("RESULTADOS DA BUSCA:", data);
             setResults(data);
+            
 
             if (data.length === 0) {
-                setError("Nenhum livro encontrado.");
+                setError("Nenhum resultado encontrado.");
             }
         } catch {
+            setResults([]);
             setError("Não foi possível realizar a pesquisa.");
         } finally {
             setLoading(false);
@@ -89,7 +96,15 @@ function SearchModal({ tipo, onClose }) {
 
                             <div>
                                 <h3>{item.title}</h3>
-                                <p>{item.author}</p>
+                                
+                                {tipo === "livro" ? (
+                                    <p>{item.author}</p>
+                                ) : (
+                                    <>
+                                        {item.year && <p>{item.year}</p>}
+                                        {item.description && <p>{item.description}</p>}
+                                    </>
+                                )}
                             </div>
                         </article>
                     ))}

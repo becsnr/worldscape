@@ -27,3 +27,31 @@ export async function getMovies(movies) {
 
     return results;
 }
+
+export async function searchMovies(query) {
+    const response = await fetch(
+        `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(query)}&language=pt-BR`, 
+        {
+            headers: {
+                Authorization: `Bearer ${TOKEN}`
+            }
+        }
+    );
+
+    if (!response.ok) {
+        const detalhe = await response.text();
+        console.error("ERRO TMDB: ", response.status, detalhe);
+        throw new Error("Não foi possível buscar os filmes.");
+    }
+
+    const data = await response.json();
+    console.log("FILMES ENCONTRADOS: ", data.results);
+    console.log("CAMINHO DA CAPA: ", data.results[0]?.poster_path);
+
+    return data.results.map((movie) => ({
+        id: movie.id,
+        title: movie.title,
+        year: movie.release_date?.slice(0, 4),
+        image: movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : null
+    }));
+}
