@@ -12,9 +12,6 @@ export async function getSerie(title) {
 
     const data = await response.json();
 
-    // console.log("SÉRIE:", title);
-    // console.log("RESPOSTA:", data);
-
     const serie = data.results?.[0];
 
     return {
@@ -31,4 +28,35 @@ export async function getSeries(series) {
     );
 
     return results;
+}
+
+export async function searchSeries(query) {
+    const response = await fetch(
+        `https://api.themoviedb.org/3/search/tv?query=${encodeURIComponent(query)}&language=pt-BR`, 
+        {
+            headers: {
+                Authorization: `Bearer ${TOKEN}`
+            }
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error("Não foi possível buscar os filmes.");
+    }
+
+    const data = await response.json();
+
+    const termo = query.trim().toLowerCase();
+
+    const resultados = data.results.map((serie) => ({
+        id: serie.id,
+        title: serie.name,
+        year: serie.first_air_date?.slice(0, 4),
+        image: serie.poster_path ? `https://image.tmdb.org/t/p/w500${serie.poster_path}` : null,
+        correspondenciaExata: serie.name.trim().toLowerCase() === termo
+    }));
+
+    return resultados.sort(
+        (a, b) => Number(b.correspondenciaExata) - Number(a.correspondenciaExata)
+    );
 }

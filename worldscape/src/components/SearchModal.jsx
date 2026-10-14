@@ -2,6 +2,7 @@ import styles from "./SearchModal.module.css";
 import { useState } from "react";
 import { searchBooks } from "../services/books";
 import { searchMovies } from "../services/movies";
+import { searchSeries } from "../services/series";
 
 function SearchModal({ tipo, onClose }) {
     const [query, setQuery] = useState("");
@@ -28,6 +29,8 @@ function SearchModal({ tipo, onClose }) {
                 data = await searchBooks(query.trim());
             } else if (tipo === "filme") {
                 data = await searchMovies(query.trim());
+            } else if (tipo === "serie") {
+                data = await searchSeries(query.trim());
             } else {
                 setResults([]);
                 setError("Essa categoria ainda não está disponível.");
