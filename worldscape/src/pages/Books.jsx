@@ -1,7 +1,7 @@
 // import styles from "./Books.module.css";
 import { useState } from "react";
 import MediaPage from "../components/MediaPage";
-import AddButton from "../components/AddButton";
+import FilterHeader from "../components/FilterHeader";
 import SearchModal from "../components/SearchModal";
 // import { searchBooks } from "../services/books";
 
@@ -10,11 +10,7 @@ function Books({ books }) {
 
     return (
         <section>
-            <header>
-                <p>Filtro</p>
-
-                <AddButton onClick={() => setIsModalOpen(true)} />
-            </header>
+            <FilterHeader />
 
             <MediaPage items={books} />
 

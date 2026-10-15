@@ -1,6 +1,6 @@
 import { useState } from "react";
 import MediaPage from "../components/MediaPage";
-import AddButton from "../components/AddButton";
+import FilterHeader from "../components/FilterHeader";
 import SearchModal from "../components/SearchModal";
 
 function Movies({ movies }) {
@@ -8,11 +8,7 @@ function Movies({ movies }) {
 
     return (
         <section>
-            <header>
-                <p>Filtro</p>
-
-                <AddButton onClick={() => setIsModalOpen(true)} />
-            </header>
+            <FilterHeader />
 
             <MediaPage items={movies} />
 
