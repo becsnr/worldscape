@@ -45,6 +45,9 @@ function SearchModal({ tipo, onClose }) {
             }
         } catch {
             setResults([]);
+            console.log("Erro completo:", error);
+            console.log("Tipo do erro:", typeof error);
+            console.log("Detalhes:", JSON.stringify(error));
             setError("Não foi possível realizar a pesquisa.");
         } finally {
             setLoading(false);
@@ -101,7 +104,7 @@ function SearchModal({ tipo, onClose }) {
                                 <h3>{item.title}</h3>
                                 
                                 {tipo === "livro" ? (
-                                    <p>{item.author}</p>
+                                    item.author && <p>{item.author}</p>
                                 ) : (
                                     <>
                                         {item.year && <p>{item.year}</p>}

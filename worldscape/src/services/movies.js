@@ -39,19 +39,22 @@ export async function searchMovies(query) {
     );
 
     if (!response.ok) {
-        const detalhe = await response.text();
-        console.error("ERRO TMDB: ", response.status, detalhe);
         throw new Error("Não foi possível buscar os filmes.");
     }
 
     const data = await response.json();
-    console.log("FILMES ENCONTRADOS: ", data.results);
-    console.log("CAMINHO DA CAPA: ", data.results[0]?.poster_path);
+    
+    const termo = query.trim().toLowerCase();
 
-    return data.results.map((movie) => ({
+    const resultados = data.results.map((movie) => ({
         id: movie.id,
         title: movie.title,
         year: movie.release_date?.slice(0, 4),
-        image: movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : null
+        image: movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : null,
+        correspondenciaExata: movie.title.trim().toLowerCase() === termo
     }));
+
+    return resultados.sort(
+        (a, b) => Number(b.correspondenciaExata) - Number(a.correspondenciaExata)
+    );
 }

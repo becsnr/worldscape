@@ -3,12 +3,7 @@ export async function getBook(isbn) {
 
     const data = await response.json();
 
-    // console.log("ISBN:", isbn);
-    // console.log("RESPOSTA DA API:", data);
-
     const book = data[`ISBN:${isbn}`];
-
-    // console.log("LIVRO:", book);
 
     return {
         title: book?.title,
@@ -26,8 +21,10 @@ export async function getBooks(books) {
 }
 
 export async function searchBooks(query) {
+    const termo = query.trim().toLowerCase();
+
     const response = await fetch(
-        `https://openlibrary.org/search.json?title=${encodeURIComponent(query.trim())}&fields=key,title,author_name&limit=20`
+        `https://openlibrary.org/search.json?title=${encodeURIComponent(termo)}&fields=key,title,author_name&limit=20`
     );
 
     if (!response.ok) {
@@ -36,9 +33,33 @@ export async function searchBooks(query) {
 
     const data = await response.json();
 
-    const termo = query.trim().toLowerCase();
+    const normalizar = (texto) => texto
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .trim();
 
     const livros = data.docs.filter((book) => book.title?.toLowerCase().includes(termo));
+
+    // const resultados = data.docs
+    // .map((book) => {
+    //     const edicao = book.editions?.docs?.find(
+    //         (item) => item.cover
+    //     );
+
+    //     const coverId = edicao?.cover ?? book.cover;
+
+    //     return {
+    //         id: book.key,
+    //         title: book.title,
+    //         author: book.author_name?.[0] ?? null,
+    //         image: coverId ? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg` : null,
+    //         relevancia: normalizar(book.title) === normalizar(termo) ? 2 : normalizar(book.title.includes(normalizar(termo)) ? 1 : 0)
+    //     };
+    // })
+    // .sort((a, b) => b.relevancia - a.relevancia);
+
+    // return resultados.slice(0, 5);
 
     const resultados = await Promise.all(
         livros.map(async (book) => {
@@ -57,7 +78,7 @@ export async function searchBooks(query) {
                 return {
                     id: book.key,
                     title: book.title,
-                    author: book.author_name?.[0] ?? "Autor desconhecido",
+                    author: book.author_name?.[0] ?? null,
                     image: coverId ? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg` : null
                 };
             } catch {
@@ -71,5 +92,5 @@ export async function searchBooks(query) {
         })
     );
 
-    return resultados;
+    return resultados.filter((livro) => livro.image !== null).slice(0, 5);
 }
