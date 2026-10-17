@@ -2,7 +2,7 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const { db, addUser, getUserByNick, getUserById, deleteUserById, addItem, getItemsByUserId, updateItem, deleteItem } = require("./database");
+const { db, addUser, getUserByNick, getUserById, deleteUserById, addItem, getItemsUsersByUserId, updateItem, deleteItem } = require("./database");
 
 const JWT_SECRET = "minha-chave-secreta";
 
@@ -186,7 +186,7 @@ app.delete("/users", verificarToken, (req, res) => {
 });
 
 // ITEMS DOS USUÁRIOS
-app.post("/items", verificarToken, (req, res) => {
+app.post("/itemsUsers", verificarToken, (req, res) => {
     const { titulo, tipo } = req.body;
 
     const tiposPermitidos = ["livro", "filme", "serie", "anime"];
@@ -220,16 +220,16 @@ app.post("/items", verificarToken, (req, res) => {
     });
 });
 
-app.get("/items", verificarToken, (req, res) => {
+app.get("/itemsUsers", verificarToken, (req, res) => {
     const userId = req.usuario.id;
 
-    const items = getItemsByUserId.all(userId);
+    const items = getItemsUsersByUserId.all(userId);
 
     res.json(items);
 });
 
 // UPDATE ITEMS
-app.put("/items/:id", verificarToken, (req, res) => {
+app.put("/itemsUsers/:id", verificarToken, (req, res) => {
     const { titulo, tipo } = req.body;
     const itemId = req.params.id;
     const userId = req.usuario.id;
@@ -254,7 +254,7 @@ app.put("/items/:id", verificarToken, (req, res) => {
 });
 
 // DELETE ITEMS
-app.delete("/items/:id", verificarToken, (req, res) => {
+app.delete("/itemsUsers/:id", verificarToken, (req, res) => {
     const itemId = req.params.id;
     const userId = req.usuario.id;
 
