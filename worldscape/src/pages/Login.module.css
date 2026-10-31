@@ -1,0 +1,122 @@
+.loginSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 100%;
+    min-height: 100vh;
+    padding: 16px;
+
+    box-sizing: border-box;
+}
+
+.formLogin {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 24px;
+
+    width: min(520px, calc(100% - 32px));
+    min-height: 400px;
+    padding: 36px 32px;
+    box-sizing: border-box;
+
+    border-radius: 20px;
+    background: #191622;
+    color: #f4f1fb;
+    box-shadow: 0 10px 70px #653eb82f;
+}
+
+.formLogin .options {
+    display: flex;
+    justify-content: center;
+    gap: 50px; 
+}
+
+.formLogin .options p {
+    margin: 0;
+
+    font-size: 17px;
+
+    cursor: pointer;
+}
+
+.formLogin .loginInputs {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    width: 100%;
+}
+
+.formLogin .loginInputs input {
+    width: 100%;
+    padding: 12px;
+    
+    border: none;
+    border-radius: 10px;
+    background-color: #66518482;
+    color: white;
+    box-sizing: border-box;
+}
+
+.formLogin .loginInputs input::placeholder {
+    color: #ffffff93;
+    font-weight: bolder;
+}
+
+.formLogin .loginInputs input:focus {
+    outline: 2px solid #8a67d8;
+    background-color: #49375f;
+}
+
+.formLogin .loginHelp {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 100%;
+}
+
+.formLogin .loginHelp p {
+    margin: 0;
+    font-size: 12px;
+
+    cursor: pointer;
+}
+
+.formLogin button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    padding: 20px;
+
+    font-weight: 600;
+}
+
+.formLogin .loginButton-enter {
+    border: none;
+    background-color: #8053D6;
+}
+
+.formLogin .loginButton-create {
+    border: 1px solid #8053D6;
+}
+
+.formLogin .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    width: 100%;
+}
+
+.divider::before, .divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background-color: #665184;
+}

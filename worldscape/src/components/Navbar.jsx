@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 function Navbar() {
     return (
         <div className={styles.navbar}>
-            <Link className={styles.link} to="/">destaques</Link>
+            <Link className={styles.link} to="/profile">destaques</Link>
 
             <Link className={styles.link} to="/books">livros</Link>
 

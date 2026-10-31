@@ -20,4 +20,4 @@ function MediaPage({ items }) {
     )
 }
 
-export default MediaPage
+export default MediaPage;

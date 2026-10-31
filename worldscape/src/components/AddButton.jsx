@@ -10,7 +10,7 @@ function AddButton({ onClick, size="normal" }) {
         >
             +
         </button>
-    );
+    )
 }
 
 export default AddButton;

@@ -1,13 +1,15 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const cors = require("cors");
 
-const { db, addUser, getUserByNick, getUserById, deleteUserById, addItem, getItemsUsersByUserId, updateItem, deleteItem } = require("./database");
+const { db, addUser, getUserByNick, getUserById, deleteUserById, addItem, getItemsUsersByUserId, updateItem, deleteItem, addBookToCatalog, getBooksFromCatalog } = require("./database");
 
 const JWT_SECRET = "minha-chave-secreta";
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -25,9 +27,9 @@ app.post("/test", (req, res) => {
 // CRIAR CONTA
 app.post("/users", async (req, res) => {
     const nick = req.body.nick?.trim();
-    const senha = req.body.senha;
+    const password = req.body.password;
 
-    if (!nick || !senha) {
+    if (!nick || !password) {
         return res.status(400).json({
             message: "Nick e senha são obrigatórios!"
         });
@@ -39,16 +41,16 @@ app.post("/users", async (req, res) => {
         });
     }
 
-    if (senha.length < 6) {
+    if (password.length < 6) {
         return res.status(400).json({
             message: "A senha deve ter pelo menos 6 caracteres!"
         });
     }
 
-    const senhaHash = await bcrypt.hash(senha, 10);
+    const passwordHash = await bcrypt.hash(password, 10);
 
     try {
-        addUser.run(nick, senhaHash);
+        addUser.run(nick, passwordHash);
 
         res.json({
         message: "Usuário criado com sucesso!",
@@ -64,9 +66,9 @@ app.post("/users", async (req, res) => {
 // FAZER LOGIN
 app.post("/login", async (req, res) => {
     const nick = req.body.nick?.trim();
-    const senha = req.body.senha;
+    const password = req.body.password;
 
-    if (!nick || !senha) {
+    if (!nick || !password) {
         return res.status(400).json({
             message: "Nick e senha são obrigatórios!"
         });
@@ -80,9 +82,9 @@ app.post("/login", async (req, res) => {
         });
     }
 
-    const senhaCorreta = await bcrypt.compare(senha, user.senha);
+    const passwordCorrect = await bcrypt.compare(password, user.senha);
 
-    if (!senhaCorreta) {
+    if (!passwordCorrect) {
         return res.status(401).json({
             message: "Senha incorreta!"
         });
@@ -270,6 +272,64 @@ app.delete("/itemsUsers/:id", verificarToken, (req, res) => {
         message: "Item excluído com sucesso!"
     });
 });
+
+// ADD LIVROS AO CATÁLOGO
+app.post("/booksCatalog", verificarToken, (req, res) => {
+    const { titulo, autor, capa, isbn } = req.body;
+
+    // verificar se os campos obrigatórios são válidos
+    if (
+        typeof titulo !== "string" || !titulo.trim() ||
+        typeof autor !== "string" || !autor.trim() ||
+        typeof capa !== "string" || !capa.trim()
+    ) {
+        return res.status(400).json({
+            message: "Título, autor e capa são obrigatórios!"
+        });
+    }
+
+    // validar o isbn
+    if (isbn != null && (typeof isbn !== "string" || !isbn.trim())) {
+        return res.status(400).json({
+            message: "O ISBN deve ser um texto válido!"
+        });
+    }
+
+    try {
+        const resultado = addBookToCatalog.run(
+            titulo.trim(),
+            autor.trim(),
+            capa.trim(),
+            isbn?.trim() || null
+        );
+
+        res.status(201).json({
+            message: "Livro adicionado ao catálogo com sucesso!",
+            id: resultado.lastInsertRowid
+        });
+    } catch (erro) {
+        console.error("Erro ao adicionar livro: ", erro);
+
+        res.status(500).json({
+            message: "Erro ao adicionar livro ao catálogo."
+        });
+    }
+});
+
+// BUSCAR LIVROS DO CATÁLOGO
+app.get("/booksCatalog", (req, res) => {
+    try {
+        const livros = getBooksFromCatalog.all();
+
+        res.status(200).json(livros);
+    } catch (erro) {
+        console.error("Erro ao buscar livros: ", erro);
+
+        res.status(500).json({
+            message: "Erro ao buscar livros do catálogo."
+        });
+    }
+})
 
 app.listen(3000, () => {
     console.log("Servidor rodando na porta 3000");

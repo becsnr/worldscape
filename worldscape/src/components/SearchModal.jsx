@@ -1,8 +1,11 @@
 import styles from "./SearchModal.module.css";
 import { useState } from "react";
+
 import { searchBooks } from "../services/books";
 import { searchMovies } from "../services/movies";
 import { searchSeries } from "../services/series";
+import { searchBooksInCatalog } from "../services/booksCatalog";
+import { addItemToCollection } from "../services/booksCatalog";
 
 function SearchModal({ tipo, onClose }) {
     const [query, setQuery] = useState("");
@@ -27,6 +30,11 @@ function SearchModal({ tipo, onClose }) {
 
             if (tipo === "livro") {
                 data = await searchBooks(query.trim());
+
+                if (data.length === 0) {
+                    data = await searchBooksInCatalog(query.trim());
+                }
+
             } else if (tipo === "filme") {
                 data = await searchMovies(query.trim());
             } else if (tipo === "serie") {
@@ -51,6 +59,18 @@ function SearchModal({ tipo, onClose }) {
             setError("Não foi possível realizar a pesquisa.");
         } finally {
             setLoading(false);
+        }
+    }
+
+    async function handleAddItem(item) {
+        try {
+            setError("");
+
+            await addItemToCollection(item.title, tipo);
+
+            setError("Item adicionado à sua coleção!");
+        } catch (erro) {
+            setError(erro.message);
         }
     }
 
@@ -112,6 +132,10 @@ function SearchModal({ tipo, onClose }) {
                                     </>
                                 )}
                             </div>
+
+                            <button type="button" onClick={() => handleAddItem(item)}>
+                                +
+                            </button>
                         </article>
                     ))}
                 </div>

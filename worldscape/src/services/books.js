@@ -41,26 +41,6 @@ export async function searchBooks(query) {
 
     const livros = data.docs.filter((book) => book.title?.toLowerCase().includes(termo));
 
-    // const resultados = data.docs
-    // .map((book) => {
-    //     const edicao = book.editions?.docs?.find(
-    //         (item) => item.cover
-    //     );
-
-    //     const coverId = edicao?.cover ?? book.cover;
-
-    //     return {
-    //         id: book.key,
-    //         title: book.title,
-    //         author: book.author_name?.[0] ?? null,
-    //         image: coverId ? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg` : null,
-    //         relevancia: normalizar(book.title) === normalizar(termo) ? 2 : normalizar(book.title.includes(normalizar(termo)) ? 1 : 0)
-    //     };
-    // })
-    // .sort((a, b) => b.relevancia - a.relevancia);
-
-    // return resultados.slice(0, 5);
-
     const resultados = await Promise.all(
         livros.map(async (book) => {
             try {

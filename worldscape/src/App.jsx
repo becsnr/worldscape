@@ -16,6 +16,7 @@ import Books from "./pages/Books";
 import Movies from "./pages/Movies";
 import Series from "./pages/Series";
 import Animes from "./pages/Animes";
+import Login from "./pages/Login";
 
 function App() {
   const [books, setBooks] = useState([]);
@@ -62,8 +63,10 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Highlights books={books} movies={movies} series={series} animes={animes} />} />
+          <Route path="/" element={<Login />}/>
+
+          <Route element={<Layout />}>
+            <Route path="/profile" element={<Highlights books={books} movies={movies} series={series} animes={animes} />} />
             
             <Route path="/books" element={<Books books={books} />} />
 
@@ -79,4 +82,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

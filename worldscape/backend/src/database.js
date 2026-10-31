@@ -24,14 +24,28 @@ db.prepare(`
     )    
 `).run();
 
-// CONFERIR O RESULTADO DA RENOMEAÇÃO
-const tabelas = db.prepare(`
-    SELECT name
-    FROM sqlite_master
-    WHERE type = 'table'
-`).all();
+// criar catálogo compartilhado de livros
+db.prepare(`
+    CREATE TABLE IF NOT EXISTS booksCatalog (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        titulo TEXT NOT NULL,
+        autor TEXT NOT NULL,
+        capa TEXT NOT NULL,
+        isbn TEXT
+    )
+`).run();
 
-console.log("Tabelas encontradas:", tabelas);
+// preparar inserção de livros no catálogo
+const addBookToCatalog = db.prepare(`
+    INSERT INTO booksCatalog (titulo, autor, capa, isbn)
+    VALUES (?, ?, ?, ?)
+`);
+
+// buscar livros do catálogo
+const getBooksFromCatalog = db.prepare(`
+    SELECT * 
+    FROM booksCatalog
+`);
 
 // cadastrar usuário
 const addUser = db.prepare(`
@@ -92,5 +106,7 @@ module.exports = {
     addItem,
     getItemsUsersByUserId,
     updateItem,
-    deleteItem
+    deleteItem,
+    addBookToCatalog,
+    getBooksFromCatalog
 };
