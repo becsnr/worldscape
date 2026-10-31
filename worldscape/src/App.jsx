@@ -66,7 +66,15 @@ function App() {
           <Route path="/" element={<Login />}/>
 
           <Route element={<Layout />}>
-            <Route path="/profile" element={<Highlights books={books} movies={movies} series={series} animes={animes} />} />
+            <Route path="/:nick" element={
+              <Highlights 
+                books={books} 
+                movies={movies} 
+                series={series} 
+                animes={animes} 
+                />
+              } 
+            />
             
             <Route path="/books" element={<Books books={books} />} />
 
