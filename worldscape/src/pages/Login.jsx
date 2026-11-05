@@ -19,7 +19,7 @@ function Login() {
 
         try {
             await login(nick, password);
-            navigate("/profile");
+            navigate(`/@${nick}`);
         } catch (erro) {
             setMessage(erro.message);
         } finally {

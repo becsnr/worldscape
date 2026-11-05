@@ -1,6 +1,6 @@
 import styles from "./FilterHeader.module.css"
 import FilterButton from "./FilterButton";
-import AddButton from "./AddButton";
+import AddButton from "../buttons/AddButton";
 
 function FilterHeader({ onAddClick }) {
     return (

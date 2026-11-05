@@ -24,6 +24,19 @@ db.prepare(`
     )    
 `).run();
 
+// criar colunas no itemsUsers
+const colunas = db.prepare("PRAGMA table_info(itemsUsers)").all();
+
+// coluna isbn (para livros)
+if (!colunas.some(coluna => coluna.name === "isbn")) {
+    db.prepare("ALTER TABLE itemsUsers ADD COLUMN isbn TEXT").run();
+}
+
+// coluna autor (para livros)
+if (!colunas.some(coluna => coluna.name === "autor")) {
+    db.prepare("ALTER TABLE itemsUsers ADD COLUMN autor TEXT").run();
+}
+
 // criar catálogo compartilhado de livros
 db.prepare(`
     CREATE TABLE IF NOT EXISTS booksCatalog (
@@ -73,13 +86,13 @@ const deleteUserById = db.prepare(`
 
 // add item para um usuário
 const addItem = db.prepare(`
-    INSERT INTO itemsUsers (titulo, tipo, user_id)
-    VALUES (?, ?, ?)
+    INSERT INTO itemsUsers (titulo, tipo, isbn, autor, user_id)
+    VALUES (?, ?, ?, ?, ?)
 `);
 
 // buscar itens de um usuário
 const getItemsUsersByUserId = db.prepare(`
-    SELECT id, titulo, tipo
+    SELECT id, titulo, tipo, isbn, autor
     FROM itemsUsers
     WHERE user_id = ?    
 `);

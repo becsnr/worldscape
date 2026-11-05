@@ -20,11 +20,11 @@ export async function getBooks(books) {
     return results;
 }
 
-export async function searchBooks(query) {
+export async function searchBooks(query, autor = null) {
     const termo = query.trim().toLowerCase();
 
     const response = await fetch(
-        `https://openlibrary.org/search.json?title=${encodeURIComponent(termo)}&fields=key,title,author_name&limit=20`
+        `https://openlibrary.org/search.json?title=${encodeURIComponent(termo)}&fields=key,title,author_name,isbn&limit=20`
     );
 
     if (!response.ok) {
@@ -39,7 +39,25 @@ export async function searchBooks(query) {
         .toLowerCase()
         .trim();
 
-    const livros = data.docs.filter((book) => book.title?.toLowerCase().includes(termo));
+    const correspondeAoLivro = (livro, titulo, autor) => {
+        return (
+            normalizar(livro.title) === normalizar(titulo) && livro.author_name?.some(
+                (nome) => normalizar(nome) === normalizar(autor)
+            )
+        );
+    };
+
+    const livros = autor ? data.docs.filter((book) => 
+        correspondeAoLivro({
+            title: book.title,
+            author_name: book.author_name
+        },
+        query,
+        autor
+        )
+    ) : data.docs.filter((book) =>
+        normalizar(book.title).includes(normalizar(termo))
+    );
 
     const resultados = await Promise.all(
         livros.map(async (book) => {
@@ -59,6 +77,7 @@ export async function searchBooks(query) {
                     id: book.key,
                     title: book.title,
                     author: book.author_name?.[0] ?? null,
+                    isbn: book.isbn?.[0] ?? null,
                     image: coverId ? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg` : null
                 };
             } catch {

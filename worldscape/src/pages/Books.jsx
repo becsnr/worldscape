@@ -1,7 +1,7 @@
 // import styles from "./Books.module.css";
 import { useState, useEffect } from "react";
 import MediaPage from "../components/MediaPage";
-import FilterHeader from "../components/FilterHeader";
+import FilterHeader from "../components/filters/FilterHeader";
 import SearchModal from "../components/SearchModal";
 import { getBooksFromCatalog } from "../services/booksCatalog";
 

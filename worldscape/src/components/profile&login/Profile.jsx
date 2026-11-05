@@ -1,9 +1,9 @@
 import styles from "./Profile.module.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getUserByNick } from "../services/users";
+import { getUserByNick, getUserItems } from "../../services/users";
 
-import Navbar from "./Navbar";
+import Navbar from "../Navbar";
 import LoginButton from "./LoginButton";
 
 function Profile() {
@@ -12,12 +12,17 @@ function Profile() {
 
     const [user, setUser] = useState(null);
     const [error, setError] = useState("");
+    const [items, setItems] = useState([]);
 
     useEffect(() => {
         async function fetchUser() {
             try {
                 const data = await getUserByNick(nick.replace("@", ""));
                 setUser(data);
+
+                const userItems = await getUserItems(nick.replace("@", ""));
+                setItems(userItems);
+
             } catch (erro) {
                 setError(erro.message);
             }

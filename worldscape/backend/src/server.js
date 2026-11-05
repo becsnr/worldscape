@@ -130,6 +130,23 @@ app.get("/users/:nick", (req, res) => {
     });
 });
 
+// PODER VISUALIZAR OS ITENS DOS USUÁRIOS (PERFIL PÚBLICO)
+app.get("/users/:nick/items", (req, res) => {
+    const { nick } = req.params;
+
+    const user = getUserByNick.get(nick);
+
+    if (!user) {
+        return res.status(404).json({
+            message: "Usuário não encontrado!"
+        });
+    }
+
+    const items = getItemsUsersByUserId.all(user.id);
+
+    res.json(items);
+});
+
 // PERFIL
 function verificarToken(req, res, next) {
     const authHeader = req.headers.authorization;
@@ -189,7 +206,7 @@ app.delete("/users", verificarToken, (req, res) => {
 
 // ITEMS DOS USUÁRIOS
 app.post("/itemsUsers", verificarToken, (req, res) => {
-    const { titulo, tipo } = req.body;
+    const { titulo, tipo, isbn, autor } = req.body;
 
     const tiposPermitidos = ["livro", "filme", "serie", "anime"];
 
@@ -215,7 +232,13 @@ app.post("/itemsUsers", verificarToken, (req, res) => {
 
     const userId = req.usuario.id;
 
-    addItem.run(titulo.trim(), tipoNormalizado, userId);
+    addItem.run(
+            titulo.trim(), 
+            tipoNormalizado, 
+            isbn || null, 
+            autor || null,
+            userId
+        );
 
     res.json({
         message: "Item criado com sucesso!"

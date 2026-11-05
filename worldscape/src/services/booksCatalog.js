@@ -36,7 +36,7 @@ export async function searchBooksInCatalog(query) {
 }
 
 // add livros no catálogo
-export async function addItemToCollection(titulo, tipo) {
+export async function addItemToCollection(titulo, tipo, isbn = null, autor = null) {
     const token = localStorage.getItem("token");
 
     const resposta = await fetch(`${API_URL}/itemsUsers`, {
@@ -45,7 +45,7 @@ export async function addItemToCollection(titulo, tipo) {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({ titulo, tipo })
+        body: JSON.stringify({ titulo, tipo, isbn,autor })
     });
 
     if (!resposta.ok) {

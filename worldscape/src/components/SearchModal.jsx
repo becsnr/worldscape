@@ -66,7 +66,7 @@ function SearchModal({ tipo, onClose }) {
         try {
             setError("");
 
-            await addItemToCollection(item.title, tipo);
+            await addItemToCollection(item.title, tipo, item.isbn, item.autor);
 
             setError("Item adicionado à sua coleção!");
         } catch (erro) {

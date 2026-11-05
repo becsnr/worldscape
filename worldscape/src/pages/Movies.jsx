@@ -1,6 +1,6 @@
 import { useState } from "react";
 import MediaPage from "../components/MediaPage";
-import FilterHeader from "../components/FilterHeader";
+import FilterHeader from "../components/filters/FilterHeader";
 import SearchModal from "../components/SearchModal";
 
 function Movies({ movies }) {
