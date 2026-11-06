@@ -1,10 +1,11 @@
-import styles from "./AddButton.module.css"
+import styles from "./AddButton.module.css";
+import stylesBtn from "./Buttons.module.css";
 
 function AddButton({ onClick, size="normal" }) {
     return (
         <button
             type="button"
-            className={`${styles.addButton} ${styles[`addButton--${size}`]}`}
+            className={`${styles.addButton} ${stylesBtn.btn} ${stylesBtn[`btn--${size}`]}`}
             onClick={onClick}
             aria-label="Adicionar item"
         >

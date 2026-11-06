@@ -1,0 +1,38 @@
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    border: 1px solid #8080807d;
+    border-radius: 10px;
+
+    color: white;
+
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 1;
+
+    cursor: pointer;
+    transition: background-color .2s ease, transform .2s ease;
+} 
+
+.btn:hover {
+    transform: scale(1.08);
+}
+
+.btn:focus-visible {
+    outline: 2px solid #d8c8fa;
+    outline-offset: 3px;
+}
+
+.btn--normal {
+    width: 55px;
+    height: 45px;
+}
+
+.btn--small {
+    width: 45px;
+    height: 35px;
+    font-size: 23px;
+}

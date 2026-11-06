@@ -1,6 +1,7 @@
 import styles from "./Card.module.css";
 
 import AddButton from "../buttons/AddButton";
+import CardMenu from "../buttons/CardMenu";
 
 function Card({ title, items, onDelete }) {
     return (
@@ -8,7 +9,10 @@ function Card({ title, items, onDelete }) {
             <div className={styles.header}>
                 <h3>{title}</h3>
 
-                <AddButton />
+                <div className={styles.cardButtons}>
+                    <AddButton />
+                    <CardMenu />
+                </div>
             </div> 
 
             <div className={styles.covers}>
