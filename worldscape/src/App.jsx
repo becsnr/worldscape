@@ -78,13 +78,13 @@ function App() {
             />
             <Route path="/:nick/estante/:tipo" element={<ExpandedShelf />} />
             
-            <Route path="/books" element={<Books books={books} />} />
+            <Route path="/:nick/books" element={<Books books={books} />} />
 
-            <Route path="/movies" element={<Movies movies={movies} />} />
+            <Route path="/:nick/movies" element={<Movies movies={movies} />} />
 
-            <Route path="/series" element={<Series series={series} />} />
+            <Route path="/:nick/series" element={<Series series={series} />} />
 
-            <Route path="/animes" element={<Animes animes={animes} />} />
+            <Route path="/:nick/animes" element={<Animes animes={animes} />} />
           </Route>
         </Routes>
       </BrowserRouter>
