@@ -17,6 +17,7 @@ import Movies from "./pages/Movies";
 import Series from "./pages/Series";
 import Animes from "./pages/Animes";
 import Login from "./pages/Login";
+import ExpandedShelf from "./pages/ExpandedShelf";
 
 function App() {
   const [books, setBooks] = useState([]);
@@ -75,6 +76,7 @@ function App() {
                 />
               } 
             />
+            <Route path="/:nick/estante/:tipo" element={<ExpandedShelf />} />
             
             <Route path="/books" element={<Books books={books} />} />
 

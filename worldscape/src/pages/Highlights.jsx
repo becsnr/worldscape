@@ -13,10 +13,10 @@ function Highlights(){
 
     return (
         <div className={styles.highlights}>
-            <Card title="📚 universos em páginas" items={books} />
-            <Card title="🎬 sessão da tarde" items={movies} />
-            <Card title="🍿 só mais um episódio" items={series} />
-            <Card title="🍥 versão otaku" items={animes} />
+            <Card title="📚 universos em páginas" items={books} tipo={"livro"} />
+            <Card title="🎬 sessão da tarde" items={movies} tipo={"filme"} />
+            <Card title="🍿 só mais um episódio" items={series} tipo={"serie"} />
+            <Card title="🍥 versão otaku" items={animes} tipo={"anime"} />
         </div>
         
     )

@@ -11,6 +11,10 @@
     box-sizing: border-box;
 }
 
+.expanded {
+    min-height: auto;
+}
+
 .card .header {
     display: flex;
     align-items: center;

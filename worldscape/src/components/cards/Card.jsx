@@ -3,15 +3,15 @@ import styles from "./Card.module.css";
 import AddButton from "../buttons/AddButton";
 import CardMenu from "../buttons/CardMenu";
 
-function Card({ title, items, onDelete }) {
+function Card({ title, items, tipo, onDelete, expanded = false }) {
     return (
-        <div className={styles.card}>
+        <div className={`${styles.card} ${expanded ? styles.expanded : ""}`}>
             <div className={styles.header}>
                 <h3>{title}</h3>
 
                 <div className={styles.cardButtons}>
                     <AddButton />
-                    <CardMenu />
+                    <CardMenu tipo={tipo} title={title} />
                 </div>
             </div> 
 
