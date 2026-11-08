@@ -1,3 +1,43 @@
+.cardMenu-container {
+    position: relative;
+}
+
 .cardMenu-menu {
     background-color: transparent;
+}
+
+.cardMenu-options {
+    position: absolute;
+    top: calc(100% + 5px);
+    right: 0;
+    z-index: 10;
+
+    display: flex;
+    flex-direction: column;
+
+    width: 130px;
+    padding: 5px;
+
+    background-color: #191622;
+    border-radius: 10px;
+}
+
+.cardMenu-options button {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    padding: 10px;
+
+    border: none;
+    border-radius: 5px;
+
+    font-size: 14px;
+    text-align: left;
+    line-height: 1.4;
+    box-sizing: border-box;
+}
+
+.cardMenu-options button:hover {
+    background-color: #302641;
 }
