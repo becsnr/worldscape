@@ -1,8 +1,12 @@
-import Profile from "../components/profile&login/Profile";
 import { Outlet, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+
+import Profile from "../components/profile&login/Profile";
+
 import { getUserItems } from "../services/users";
 import { getBook, searchBooks } from "../services/books";
+import { getMovie } from "../services/movies";
+import { getSerie } from "../services/series";
 
 function Layout() {
     const { nick } = useParams();
@@ -33,6 +37,34 @@ function Layout() {
                                     image: resultados[0]?.image ?? null
                                 };
                             }
+                        }
+
+                        if (item.tipo === "filme") {
+                            const filme = await getMovie(item.titulo);
+
+                            return {
+                                ...item,
+                                image: filme.image
+                            };
+                        }
+
+                        if (
+                            item.tipo === "filme" ||
+                            item.tipo === "serie" ||
+                            item.tipo === "anime"
+                        ) {
+                            let resultado;
+
+                            if (item.tipo === "filme") {
+                                resultado = await getMovie(item.titulo);
+                            } else {
+                                resultado = await getSerie(item.titulo);
+                            }
+
+                            return {
+                                ...item,
+                                image: resultado.image
+                            };
                         }
 
                         return item;
