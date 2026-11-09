@@ -1,15 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import { useEffect, useState } from "react";
-
-import booksData from "./data/books.json";
-import { getBooks } from "./services/books";
-import moviesData from "./data/movies.json";
-import { getMovies } from "./services/movies";
-import seriesData from "./data/series.json";
-import { getSeries } from "./services/series";
-import animesData from "./data/animes.json";
-
 import Layout from "./layout/Layout";
 import Highlights from "./pages/Highlights";
 import Books from "./pages/Books";
@@ -20,46 +10,6 @@ import Login from "./pages/Login";
 import ExpandedShelf from "./pages/ExpandedShelf";
 
 function App() {
-  const [books, setBooks] = useState([]);
-  const [movies, setMovies] = useState([]);
-  const [series, setSeries] = useState([]);
-  const [animes, setAnimes] = useState([]);
-
-  useEffect(() => {
-      async function fetchBooks() {
-          const data = await getBooks(booksData);
-          setBooks(data);
-      }
-
-      fetchBooks();
-  }, []);
-
-  useEffect(() => {
-      async function fetchMovies() {
-          const data = await getMovies(moviesData);
-          setMovies(data);
-      }
-
-      fetchMovies();
-  }, []);
-
-  useEffect(() => {
-      async function fetchSeries() {
-          const data = await getSeries(seriesData);
-          setSeries(data);
-      }
-
-      fetchSeries();
-  }, []);
-
-  useEffect(() => {
-      async function fetchAnimes() {
-          const data = await getSeries(animesData);
-          setAnimes(data);
-      }
-
-      fetchAnimes();
-  }, []);
   return (
     <>
       <BrowserRouter>
@@ -67,15 +17,8 @@ function App() {
           <Route path="/" element={<Login />}/>
 
           <Route element={<Layout />}>
-            <Route path="/:nick" element={
-              <Highlights 
-                books={books} 
-                movies={movies} 
-                series={series} 
-                animes={animes} 
-                />
-              } 
-            />
+            <Route path="/:nick" element={<Highlights />}/>
+
             <Route path="/:nick/estante/:tipo" element={<ExpandedShelf />} />
             
             <Route path="/:nick/books" element={<Books />} />
