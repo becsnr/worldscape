@@ -7,7 +7,7 @@ import SearchModal from "../components/SearchModal";
 
 function Series() {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { items } = useOutletContext();
+    const { items, refreshItems } = useOutletContext();
     const series = items
         .filter((item) => item.tipo === "serie")
         .map((item) => ({
@@ -26,6 +26,7 @@ function Series() {
                 <SearchModal 
                     tipo="serie"
                     onClose={() => setIsModalOpen(false)}
+                    onItemAdded={refreshItems}
                 />
             )}
         </section>

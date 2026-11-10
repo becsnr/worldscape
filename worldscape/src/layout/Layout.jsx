@@ -1,5 +1,5 @@
 import { Outlet, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 import Profile from "../components/profile&login/Profile";
 
@@ -12,7 +12,7 @@ function Layout() {
     const { nick } = useParams();
     const [items, setItems] = useState([]);
 
-    useEffect(() => {
+    const refreshItems = useCallback(async () => {
         async function fetchItems() {
             try {
                 const data = await getUserItems(nick.replace("@", ""));
@@ -37,15 +37,6 @@ function Layout() {
                                     image: resultados[0]?.image ?? null
                                 };
                             }
-                        }
-
-                        if (item.tipo === "filme") {
-                            const filme = await getMovie(item.titulo);
-
-                            return {
-                                ...item,
-                                image: filme.image
-                            };
                         }
 
                         if (
@@ -83,12 +74,18 @@ function Layout() {
         }
     }, [nick]);
 
+    useEffect(() => {
+        if (nick) {
+            refreshItems();
+        }
+    }, [nick, refreshItems]);
+
     return (
         <>
             <Profile />
 
             <main>
-                <Outlet context={{ items }} />
+                <Outlet context={{ items, refreshItems }} />
             </main>
         </>
     )

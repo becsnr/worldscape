@@ -1,5 +1,6 @@
 import styles from "./SearchModal.module.css";
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 
 import { searchBooks } from "../services/books";
 import { searchMovies } from "../services/movies";
@@ -7,66 +8,76 @@ import { searchSeries } from "../services/series";
 import { searchBooksInCatalog } from "../services/booksCatalog";
 import { addItemToCollection } from "../services/booksCatalog";
 
-function SearchModal({ tipo, onClose }) {
+function SearchModal({ tipo, onClose, onItemAdded }) {
     const [query, setQuery] = useState("");
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
-    async function handleSearch(event) {
-        event.preventDefault();
+    async function searchItems(searchQuery) {
+        let data;
 
-        if (!query.trim()) {
+        if (tipo === "livro") {
+            data = await searchBooks(searchQuery);
+
+            if (data.length === 0) {
+                data = await searchBooksInCatalog(searchQuery);
+            }
+        } else if (tipo === "filme") {
+            data = await searchMovies(searchQuery);
+        } else if (tipo === "serie") {
+            data = await searchSeries(searchQuery);
+        } else if (tipo === "anime") {
+            data = await searchSeries(searchQuery);
+        } else {
             setResults([]);
-            setError("Digite o que deseja pesquisar.");
+            setError("Essa categoria ainda não está diponível.");
             return;
         }
 
-        try {
-            setLoading(true);
+        setResults(data);
+
+        if (data.length === 0) {
+            setError("Nenhum resultado encontrado.");
+        } else {
             setError("");
-
-            let data;
-
-            if (tipo === "livro") {
-                data = await searchBooks(query.trim());
-
-                if (data.length === 0) {
-                    data = await searchBooksInCatalog(query.trim());
-                }
-
-            } else if (tipo === "filme") {
-                data = await searchMovies(query.trim());
-            } else if (tipo === "serie") {
-                data = await searchSeries(query.trim());
-            } else {
-                setResults([]);
-                setError("Essa categoria ainda não está disponível.");
-                return;
-            }
-
-            setResults(data);
-            
-
-            if (data.length === 0) {
-                setError("Nenhum resultado encontrado.");
-            }
-        } catch {
-            setResults([]);
-            console.log("Erro completo:", error);
-            console.log("Tipo do erro:", typeof error);
-            console.log("Detalhes:", JSON.stringify(error));
-            setError("Não foi possível realizar a pesquisa.");
-        } finally {
-            setLoading(false);
         }
     }
+
+    useEffect(() => {
+        if (!query.trim()) {
+            setResults([]);
+            setError("");
+            return;
+        }
+
+        const timer = setTimeout(async () => {
+            try {
+                setLoading(true);
+                setError("");
+
+                await searchItems(query.trim());
+            } catch (erro) {
+                setResults([]);
+                setError("Não foi possível realizar a pesquisa.");
+                console.error(erro);
+            } finally {
+                setLoading(false);
+            }
+        }, 500);
+
+        return () => clearTimeout(timer);
+    }, [query, tipo]);
 
     async function handleAddItem(item) {
         try {
             setError("");
 
             await addItemToCollection(item.title, tipo, item.isbn, item.autor);
+
+            if (onItemAdded) {
+                await onItemAdded();
+            }
 
             setError("Item adicionado à sua coleção!");
         } catch (erro) {
@@ -98,17 +109,13 @@ function SearchModal({ tipo, onClose }) {
 
                 <p>Adicionar item à sua coleção.</p>
 
-                <form onSubmit={handleSearch}>
+                <form onSubmit={(event) => event.preventDefault()}>
                     <input 
                         type="search"
                         placeholder={`Pesquisar ${tipo}...`}
                         value={query}
                         onChange={(event) => setQuery(event.target.value)}
                     />
-
-                    <button type="submit" disabled={loading}>
-                        {loading ? "Buscando..." : "Pesquisar"}
-                    </button>
                 </form>
 
                 {error && <p className={styles.error}>{error}</p>}

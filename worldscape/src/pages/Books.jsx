@@ -8,7 +8,7 @@ import SearchModal from "../components/SearchModal";
 
 function Books() {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { items } = useOutletContext();
+    const { items, refreshItems } = useOutletContext();
     const books = items
         .filter((item) => item.tipo === "livro")
         .map((item) => ({
@@ -27,6 +27,7 @@ function Books() {
                 <SearchModal 
                     tipo="livro"
                     onClose={() => setIsModalOpen(false)}
+                    onItemAdded={refreshItems}
                 />
             )}
         </section>

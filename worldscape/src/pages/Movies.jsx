@@ -7,7 +7,7 @@ import SearchModal from "../components/SearchModal";
 
 function Movies() {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { items } = useOutletContext();
+    const { items, refreshItems } = useOutletContext();
     const movies = items
         .filter((item) => item.tipo === "filme")
         .map((item) => ({
@@ -26,6 +26,7 @@ function Movies() {
                 <SearchModal 
                     tipo="filme"
                     onClose={() => setIsModalOpen(false)}
+                    onItemAdded={refreshItems}
                 />
             )}
 
