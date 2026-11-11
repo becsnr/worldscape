@@ -90,6 +90,12 @@ const addItem = db.prepare(`
     VALUES (?, ?, ?, ?, ?)
 `);
 
+// verificar se tem item repetido
+const verificarItem = db.prepare(`
+   SELECT id FROM itemsUsers
+    WHERE titulo = ? AND tipo = ? AND user_id = ?
+`);
+
 // buscar itens de um usuário
 const getItemsUsersByUserId = db.prepare(`
     SELECT id, titulo, tipo, isbn, autor
@@ -117,6 +123,7 @@ module.exports = {
     getUserById,
     deleteUserById,
     addItem,
+    verificarItem,
     getItemsUsersByUserId,
     updateItem,
     deleteItem,

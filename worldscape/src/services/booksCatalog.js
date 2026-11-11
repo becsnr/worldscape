@@ -49,7 +49,8 @@ export async function addItemToCollection(titulo, tipo, isbn = null, autor = nul
     });
 
     if (!resposta.ok) {
-        throw new Error("Não foi possível adicionar o item à coleção.");
+        const erro = await resposta.json();
+        throw new Error(erro.message);
     }
 
     return await resposta.json();
