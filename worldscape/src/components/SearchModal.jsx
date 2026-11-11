@@ -6,7 +6,7 @@ import { searchBooks } from "../services/books";
 import { searchMovies } from "../services/movies";
 import { searchSeries } from "../services/series";
 import { searchBooksInCatalog } from "../services/booksCatalog";
-import { addItemToCollection } from "../services/booksCatalog";
+import { addItemToCollection } from "../services/itemsService";
 
 function SearchModal({ tipo, onClose, onItemAdded }) {
     const [query, setQuery] = useState("");
