@@ -3,8 +3,10 @@ import stylesBtn from "./Buttons.module.css";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-function CardMenu({ size="normal", tipo, title }) {
+function CardMenu({ size="normal", tipo, title, items, onStartSelecting }) {
     const [menuOpen, setMenuOpen] = useState(false);
+    const [organizationOpen, setOrganizationOpen] = useState(false);
+    const [selectingItem, setSelectingItem] = useState(false);
     const menuRef = useRef(null);
     const navigate = useNavigate();
     const { nick } = useParams();
@@ -40,7 +42,22 @@ function CardMenu({ size="normal", tipo, title }) {
                         Expandir estante
                     </button>
 
-                    <button>Organização</button>
+                    <button onClick={() => setOrganizationOpen(!organizationOpen)}>
+                        Organização &gt;
+                    </button>
+
+                    {organizationOpen && (
+                        <div>
+                            <button>Mover de lugar</button>
+                            <button onClick={() => {
+                                onStartSelecting();
+                                setMenuOpen(false);
+                                setOrganizationOpen(false);
+                            }}>
+                                Remover da estante
+                            </button>
+                        </div>
+                    )}
                 </div>
             )}
         </div>

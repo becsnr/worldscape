@@ -7,7 +7,8 @@ import SearchModal from "../components/SearchModal";
 
 function Series() {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { items, refreshItems } = useOutletContext();
+    const { items, refreshItems, handleDeleteItem } = useOutletContext();
+
     const series = items
         .filter((item) => item.tipo === "serie")
         .map((item) => ({
@@ -20,7 +21,7 @@ function Series() {
         <section>
             <FilterHeader onAddClick={() => setIsModalOpen(true)} />
 
-            <MediaPage items={series} />
+            <MediaPage items={series} onDelete={handleDeleteItem} />
 
             {isModalOpen && (
                 <SearchModal 

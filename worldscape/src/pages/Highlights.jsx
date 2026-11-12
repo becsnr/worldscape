@@ -4,7 +4,7 @@ import { useOutletContext } from "react-router-dom";
 import Card from "../components/cards/Card";
 
 function Highlights(){
-    const { items } = useOutletContext();
+    const { items, handleDeleteItem } = useOutletContext();
 
     const books = items.filter(item => item.tipo === "livro");
     const movies = items.filter(item => item.tipo === "filme");
@@ -13,13 +13,36 @@ function Highlights(){
 
     return (
         <div className={styles.highlights}>
-            <Card title="📚 universos em páginas" items={books} tipo={"livro"} />
-            <Card title="🎬 sessão da tarde" items={movies} tipo={"filme"} />
-            <Card title="🍿 só mais um episódio" items={series} tipo={"serie"} />
-            <Card title="🍥 versão otaku" items={animes} tipo={"anime"} />
+            <Card 
+                title="📚 universos em páginas" 
+                items={books} 
+                tipo={"livro"} 
+                onDelete={handleDeleteItem}
+            />
+
+            <Card 
+                title="🎬 sessão da tarde" 
+                items={movies} 
+                tipo={"filme"} 
+                onDelete={handleDeleteItem}
+            />
+
+            <Card 
+                title="🍿 só mais um episódio" 
+                items={series} 
+                tipo={"serie"} 
+                onDelete={handleDeleteItem}
+            />
+
+            <Card 
+                title="🍥 versão otaku" 
+                items={animes} 
+                tipo={"anime"} 
+                onDelete={handleDeleteItem}
+            />
         </div>
         
     )
 }
 
-export default Highlights
+export default Highlights;

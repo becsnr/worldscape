@@ -7,6 +7,7 @@ import { getUserItems } from "../services/users";
 import { getBook, searchBooks } from "../services/books";
 import { getMovie } from "../services/movies";
 import { getSerie } from "../services/series";
+import { deleteItem } from "../services/itemsService";
 
 function Layout() {
     const { nick } = useParams();
@@ -74,6 +75,15 @@ function Layout() {
         }
     }, [nick]);
 
+    const handleDeleteItem = useCallback(async (id) => {
+        try {
+            await deleteItem(id);
+            await refreshItems();
+        } catch (erro) {
+            console.error(erro);
+        }
+    }, [refreshItems]);
+
     useEffect(() => {
         if (nick) {
             refreshItems();
@@ -85,7 +95,7 @@ function Layout() {
             <Profile />
 
             <main>
-                <Outlet context={{ items, refreshItems }} />
+                <Outlet context={{ items, refreshItems, handleDeleteItem }} />
             </main>
         </>
     )

@@ -1,9 +1,14 @@
 import styles from "./Card.module.css";
 
+import { useState } from "react";
+
 import AddButton from "../buttons/AddButton";
 import CardMenu from "../buttons/CardMenu";
 
 function Card({ title, items, tipo, onDelete, expanded = false }) {
+    const [selectingItem, setSelectingItem] = useState(false);
+    const [selectingItemId, setSelectingItemId] = useState(null);
+
     return (
         <div className={`${styles.card} ${expanded ? styles.expanded : ""}`}>
             <div className={styles.header}>
@@ -11,7 +16,12 @@ function Card({ title, items, tipo, onDelete, expanded = false }) {
 
                 <div className={styles.cardButtons}>
                     <AddButton />
-                    <CardMenu tipo={tipo} title={title} />
+                    <CardMenu 
+                        tipo={tipo} 
+                        title={title} 
+                        items={items} 
+                        onStartSelecting={() => setSelectingItem(true)}
+                    />
                 </div>
             </div> 
 
@@ -22,14 +32,54 @@ function Card({ title, items, tipo, onDelete, expanded = false }) {
                             key={item.id ?? item.title}
                             src={item.image} 
                             alt={item.title}
+                            onClick={() => {
+                                if (selectingItem) {
+                                    setSelectingItemId(item.id);
+                                }
+                            }}
+                            style={{
+                                outline: selectingItemId === item.id ? "3px solid #8a67d8" : "none"
+                            }}
                         />
                     ) : (
-                        <p key={item.id ?? item.titulo}>
+                        <p 
+                            key={item.id ?? item.titulo}
+                            onClick={() => {
+                                if (selectingItem) {
+                                    setSelectingItemId(item.id);
+                                }
+                            }}
+                            style={{
+                                outline: selectingItemId === item.id ? "3px solid #8a67d8" : "none"
+                            }}
+                        >
                             {item.titulo || item.title}
                         </p>
                     )
                 ))}
             </div>
+
+            {selectingItem && (
+                <div>
+                    <button onClick={() => {
+                        setSelectingItem(false);
+                        setSelectingItemId(null);
+                    }}>
+                        Cancelar
+                    </button>
+
+                    <button 
+                        disabled={!selectingItemId}
+                        onClick={async () => {
+                            await onDelete(selectingItemId);
+                            setSelectingItem(false);
+                            setSelectingItemId(null);
+                        }}
+                    >
+                        Remover item
+                    </button>
+                </div>
+            )}
         </div>
     )
 }

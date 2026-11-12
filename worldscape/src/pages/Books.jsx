@@ -8,7 +8,7 @@ import SearchModal from "../components/SearchModal";
 
 function Books() {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { items, refreshItems } = useOutletContext();
+    const { items, refreshItems, handleDeleteItem } = useOutletContext();
     const books = items
         .filter((item) => item.tipo === "livro")
         .map((item) => ({
@@ -21,7 +21,7 @@ function Books() {
         <section>
             <FilterHeader onAddClick={() => setIsModalOpen(true)} />
 
-            <MediaPage items={books} />
+            <MediaPage items={books} onDelete={handleDeleteItem} />
 
             {isModalOpen && (
                 <SearchModal 

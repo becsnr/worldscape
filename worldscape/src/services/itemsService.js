@@ -20,3 +20,22 @@ export async function addItemToCollection(titulo, tipo, isbn = null, autor = nul
 
     return await resposta.json();
 }
+
+// deletar item
+export async function deleteItem(id) {
+    const token = localStorage.getItem("token");
+
+    const resposta = await fetch(`${API_URL}/itemsUsers/${id}`, {
+        method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
+
+    if (!resposta.ok) {
+        const erro = await resposta.json();
+        throw new Error(erro.message);
+    }
+
+    return await resposta.json();
+}
