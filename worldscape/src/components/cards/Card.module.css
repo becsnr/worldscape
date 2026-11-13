@@ -65,3 +65,58 @@
     border-color: palevioletred;
     transform: scale(0.95);
 }
+
+.selecting {
+    height: auto;
+    min-height: 200px;
+}
+
+.selectionActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 20px;
+    padding: 5px;
+}
+
+.selectionActions button {
+    width: auto;
+    padding: 7px 14px;
+
+    border: 1px solid palevioletred;
+    border-radius: 20px;
+    
+    font-size: .85rem;
+    font-weight: bolder;
+    cursor: pointer;
+
+    transition: .2s ease;
+}
+
+.selectionActions button:hover {
+    background-color: palevioletred;
+}
+
+.selectionActions .cancelButton {
+    color: palevioletred;
+}
+
+.selectionActions .cancelButton:hover {
+    background-color: palevioletred;
+    color: white;
+}
+
+.selectionActions .removeButton {
+    background-color: palevioletred;
+    font-weight: bold;
+}
+
+.selectionActions .removeButton:hover {
+    background-color: #c65d83;
+    border-color: #c65d83;
+}
+
+.selectionActions .removeButton:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}

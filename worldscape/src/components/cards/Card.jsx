@@ -10,7 +10,7 @@ function Card({ title, items, tipo, onDelete, expanded = false }) {
     const [selectingItemId, setSelectingItemId] = useState(null);
 
     return (
-        <div className={`${styles.card} ${expanded ? styles.expanded : ""}`}>
+        <div className={`${styles.card} ${expanded ? styles.expanded : ""} ${selectingItem ? styles.selecting : ""}`}>
             <div className={styles.header}>
                 <h3>{title}</h3>
 
@@ -60,8 +60,10 @@ function Card({ title, items, tipo, onDelete, expanded = false }) {
             </div>
 
             {selectingItem && (
-                <div>
-                    <button onClick={() => {
+                <div className={styles.selectionActions}>
+                    <button 
+                        className={styles.cancelButton}
+                        onClick={() => {
                         setSelectingItem(false);
                         setSelectingItemId(null);
                     }}>
@@ -69,6 +71,7 @@ function Card({ title, items, tipo, onDelete, expanded = false }) {
                     </button>
 
                     <button 
+                        className={styles.removeButton}
                         disabled={!selectingItemId}
                         onClick={async () => {
                             await onDelete(selectingItemId);
