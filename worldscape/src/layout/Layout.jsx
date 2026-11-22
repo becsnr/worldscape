@@ -4,10 +4,10 @@ import { useEffect, useState, useCallback } from "react";
 import Profile from "../components/profile&login/Profile";
 
 import { getUserItems } from "../services/users";
+import { deleteItem, updateItemsOrder } from "../services/itemsService";
 import { getBook, searchBooks } from "../services/books";
 import { getMovie } from "../services/movies";
 import { getSerie } from "../services/series";
-import { deleteItem } from "../services/itemsService";
 
 function Layout() {
     const { nick } = useParams();
@@ -90,12 +90,21 @@ function Layout() {
         }
     }, [nick, refreshItems]);
 
+    const handleUpdateOrder = useCallback(async (ids) => {
+        try {
+            await updateItemsOrder(ids);
+            await refreshItems();
+        } catch (erro) {
+            console.error(erro);
+        }
+    }, [refreshItems]);
+
     return (
         <>
             <Profile />
 
             <main>
-                <Outlet context={{ items, refreshItems, handleDeleteItem }} />
+                <Outlet context={{ items, refreshItems, handleDeleteItem, handleUpdateOrder }} />
             </main>
         </>
     )

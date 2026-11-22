@@ -4,7 +4,7 @@ import { useOutletContext } from "react-router-dom";
 import Card from "../components/cards/Card";
 
 function Highlights(){
-    const { items, handleDeleteItem } = useOutletContext();
+    const { items, handleDeleteItem, handleUpdateOrder } = useOutletContext();
 
     const books = items.filter(item => item.tipo === "livro");
     const movies = items.filter(item => item.tipo === "filme");
@@ -18,6 +18,7 @@ function Highlights(){
                 items={books} 
                 tipo={"livro"} 
                 onDelete={handleDeleteItem}
+                onUpdateOrder={handleUpdateOrder}
             />
 
             <Card 
@@ -25,6 +26,7 @@ function Highlights(){
                 items={movies} 
                 tipo={"filme"} 
                 onDelete={handleDeleteItem}
+                onUpdateOrder={handleUpdateOrder}
             />
 
             <Card 
@@ -32,6 +34,7 @@ function Highlights(){
                 items={series} 
                 tipo={"serie"} 
                 onDelete={handleDeleteItem}
+                onUpdateOrder={handleUpdateOrder}
             />
 
             <Card 
@@ -39,6 +42,7 @@ function Highlights(){
                 items={animes} 
                 tipo={"anime"} 
                 onDelete={handleDeleteItem}
+                onUpdateOrder={handleUpdateOrder}
             />
         </div>
         

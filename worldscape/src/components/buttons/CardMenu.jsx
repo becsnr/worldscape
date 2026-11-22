@@ -3,7 +3,7 @@ import stylesBtn from "./Buttons.module.css";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-function CardMenu({ size="normal", tipo, title, items, onStartSelecting }) {
+function CardMenu({ size="normal", tipo, title, items, onStartSelecting, onStartOrganizing }) {
     const [menuOpen, setMenuOpen] = useState(false);
     const [organizationOpen, setOrganizationOpen] = useState(false);
     const [selectingItem, setSelectingItem] = useState(false);
@@ -48,7 +48,14 @@ function CardMenu({ size="normal", tipo, title, items, onStartSelecting }) {
 
                     {organizationOpen && (
                         <div>
-                            <button>Mover de lugar</button>
+                            <button onClick={() => {
+                                onStartOrganizing();
+                                setMenuOpen(false);
+                                setOrganizationOpen(false);
+                            }}>
+                                Mover de lugar
+                            </button>
+
                             <button onClick={() => {
                                 onStartSelecting();
                                 setMenuOpen(false);

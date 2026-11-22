@@ -7,7 +7,7 @@ import SearchModal from "../components/SearchModal";
 
 function Animes() {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { items, refreshItems, handleDeleteItem } = useOutletContext();
+    const { items, refreshItems, handleDeleteItem, handleUpdateOrder } = useOutletContext();
 
     const animes = items
         .filter((item) => item.tipo === "anime")
@@ -21,7 +21,7 @@ function Animes() {
         <section>
             <FilterHeader onAddClick={() => setIsModalOpen(true)} />
 
-            <MediaPage items={animes} onDelete={handleDeleteItem} />
+            <MediaPage items={animes} onDelete={handleDeleteItem} onUpdateOrder={handleUpdateOrder} />
 
             {isModalOpen && (
                 <SearchModal 

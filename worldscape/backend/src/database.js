@@ -37,6 +37,14 @@ if (!colunas.some(coluna => coluna.name === "autor")) {
     db.prepare("ALTER TABLE itemsUsers ADD COLUMN autor TEXT").run();
 }
 
+// coluna posição dos items
+if (!colunas.some(coluna => coluna.name === "position")) {
+    db.prepare(`
+        ALTER TABLE itemsUsers
+        ADD COLUMN position INTEGER DEFAULT 0    
+    `).run();
+}
+
 // criar catálogo compartilhado de livros
 db.prepare(`
     CREATE TABLE IF NOT EXISTS booksCatalog (
@@ -98,15 +106,23 @@ const verificarItem = db.prepare(`
 
 // buscar itens de um usuário
 const getItemsUsersByUserId = db.prepare(`
-    SELECT id, titulo, tipo, isbn, autor
+    SELECT id, titulo, tipo, isbn, autor, position
     FROM itemsUsers
-    WHERE user_id = ?    
+    WHERE user_id = ?
+    ORDER BY tipo, position ASC, id ASC 
 `);
 
 // atualizar item de usuário
 const updateItem = db.prepare(`
     UPDATE itemsUsers
     SET titulo = ?, tipo = ?
+    WHERE id = ? AND user_id = ?
+`);
+
+// atualizar posição dos items
+const updatePosition = db.prepare(`
+    UPDATE itemsUsers
+    SET position = ?
     WHERE id = ? AND user_id = ?
 `);
 
@@ -126,6 +142,7 @@ module.exports = {
     verificarItem,
     getItemsUsersByUserId,
     updateItem,
+    updatePosition,
     deleteItem,
     addBookToCatalog,
     getBooksFromCatalog

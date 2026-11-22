@@ -6,7 +6,7 @@ import Card from "../components/cards/Card";
 // exibir todos os items da estante selecionada 
 function ExpandedShelf() {
     const { tipo } = useParams();
-    const { items, handleDeleteItem } = useOutletContext();
+    const { items, handleDeleteItem, handleUpdateOrder } = useOutletContext();
 
     const shelfItems = items.filter(item => item.tipo === tipo);
 
@@ -21,6 +21,7 @@ function ExpandedShelf() {
             items={shelfItems} 
             expanded={true}
             onDelete={handleDeleteItem}
+            onUpdateOrder={handleUpdateOrder}
             />
         </div>
     );

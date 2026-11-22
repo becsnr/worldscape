@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
 
-const { db, addUser, getUserByNick, getUserById, deleteUserById, addItem, verificarItem, getItemsUsersByUserId, updateItem, deleteItem, addBookToCatalog, getBooksFromCatalog } = require("./database");
+const { db, addUser, getUserByNick, getUserById, deleteUserById, addItem, verificarItem, getItemsUsersByUserId, updateItem, updatePosition, deleteItem, addBookToCatalog, getBooksFromCatalog } = require("./database");
 
 const JWT_SECRET = "minha-chave-secreta";
 
@@ -265,6 +265,31 @@ app.get("/itemsUsers", verificarToken, (req, res) => {
     res.json(items);
 });
 
+// UPDATE POSITION ITEMS
+app.put("/itemsUsers/order", verificarToken, (req, res) => {
+    const userId = req.usuario.id;
+    const { ids } = req.body;
+
+    if (!Array.isArray(ids)) {
+        return res.status(400).json({
+            message: "Lista de itens inválida!"
+        });
+    }
+
+    const updateOrder = db.transaction(() => {
+        ids.forEach((id, index) => {
+            updatePosition.run(index, id, userId);
+        });
+    });
+
+    updateOrder();
+
+    res.json({
+        message: "Ordem atualizada com sucesso!"
+    });
+});
+
+
 // UPDATE ITEMS
 app.put("/itemsUsers/:id", verificarToken, (req, res) => {
     const { titulo, tipo } = req.body;
@@ -364,7 +389,46 @@ app.get("/booksCatalog", (req, res) => {
             message: "Erro ao buscar livros do catálogo."
         });
     }
-})
+});
+
+// BUSCAR LIVRO NA API
+app.get("/books/:isbn", async (req, res) => {
+    const { isbn } = req.params;
+
+    try {
+        const resposta = await fetch(
+            `https://openlibrary.org/api/books?bibkeys=ISBN:${encodeURIComponent(isbn)}&format=json&jscmd=data`
+        );
+
+        if (!resposta.ok) {
+            return res.status(502).json({
+                message: "Erro ao consultar a API."
+            });
+        }
+
+        const data = await resposta.json();
+
+        const book = data[`ISBN:${isbn}`];
+
+        if (!book) {
+            return res.status(404).json({
+                message: "Livro não encontrado!"
+            });
+        }
+
+        res.json({
+            title: book.title,
+            author: book.authors?.[0]?.name,
+            image: book.cover?.large ?? null
+        });
+    } catch (erro) {
+        console.error("Erro ao buscar livro na API:", erro);
+
+        res.status(500).json({
+            message: "Não foi possível buscaro livro."
+        });
+    }
+});
 
 app.listen(3000, () => {
     console.log("Servidor rodando na porta 3000");

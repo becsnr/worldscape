@@ -33,7 +33,7 @@
     gap: 10px;
 }
 
-.card .covers {
+.card .coverContainer {
     display: flex;
     gap: 5px;
 
@@ -41,13 +41,13 @@
     scrollbar-width: none;
 }
 
-.expanded .covers {
+.expanded .coverContainer {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     gap: 10px;
 }
 
-.card img {
+.coverContainer .covers img {
     height: 120px;
     border: 3px solid transparent;
     border-radius: 5px;
@@ -64,6 +64,25 @@
 .card img:hover {
     border-color: palevioletred;
     transform: scale(0.95);
+}
+
+.coverContainer .covers {
+    position: relative;
+    display: inline-flex;
+    flex-shrink: 0;
+}
+
+.coverContainer .dragHandle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    font-size: 2rem;
+    cursor: grab;
+
+    opacity: .85;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0,7);
 }
 
 .selecting {
@@ -106,17 +125,17 @@
     color: white;
 }
 
-.selectionActions .removeButton {
+.selectionActions .removeButton, .selectionActions .saveButton {
     background-color: palevioletred;
     font-weight: bold;
 }
 
-.selectionActions .removeButton:hover {
+.selectionActions .removeButton:hover, .selectionActions .saveButton:hover {
     background-color: #c65d83;
     border-color: #c65d83;
 }
 
-.selectionActions .removeButton:disabled {
+.selectionActions .removeButton:disabled, .selectionActions .saveButton:disabled {
     opacity: .5;
     cursor: not-allowed;
 }

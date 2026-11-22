@@ -1,15 +1,13 @@
 export async function getBook(isbn) {
-    const response = await fetch(`https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&format=json&jscmd=data`);
+    const response = await fetch(`http://localhost:3000/books/${encodeURIComponent(isbn)}`);
 
-    const data = await response.json();
-
-    const book = data[`ISBN:${isbn}`];
-
-    return {
-        title: book?.title,
-        author: book?.authors?.[0]?.name,
-        image: book?.cover?.large
+    if (!response.ok) {
+        throw new Error("Não foi possível buscar o livro.");
     }
+
+    const book = await response.json();
+
+    return book;
 }
 
 export async function getBooks(books) {

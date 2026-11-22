@@ -1,6 +1,6 @@
 import styles from "./MediaPage.module.css";
 
-function MediaPage({ items, onDelete }) {
+function MediaPage({ items, onDelete, onUpdateOrder }) {
     return (
         <div className={styles.mediaPage}>
             <div className={styles.mediaCover}>

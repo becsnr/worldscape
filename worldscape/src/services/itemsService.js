@@ -39,3 +39,24 @@ export async function deleteItem(id) {
 
     return await resposta.json();
 }
+
+// alterar posição dos items
+export async function updateItemsOrder(ids) {
+    const token = localStorage.getItem("token");
+
+    const resposta = await fetch(`${API_URL}/itemsUsers/order`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ ids })
+    });
+
+    if (!resposta.ok) {
+        const erro = await resposta.json();
+        throw new Error(erro.message);
+    }
+
+    return await resposta.json();
+}
