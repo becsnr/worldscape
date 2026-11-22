@@ -72,17 +72,22 @@
     flex-shrink: 0;
 }
 
-.coverContainer .dragHandle {
+.coverContainer .dragHandle, .coverContainer .removeHandle {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 
     font-size: 2rem;
+    text-shadow: 0 1px 5px #060606;
     cursor: grab;
 
     opacity: .85;
     text-shadow: 0 1px 5px rgba(0, 0, 0, 0,7);
+}
+
+.coverContainer .removeHandle {
+    color: red;
 }
 
 .selecting {

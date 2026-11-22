@@ -33,7 +33,8 @@ function SortableCover({ item, children, organizing }) {
 
 function Card({ title, items, tipo, onDelete, onUpdateOrder, expanded = false }) {
     const [selectingItem, setSelectingItem] = useState(false); // para excluir
-    const [selectingItemId, setSelectingItemId] = useState(null);
+    const [selectingItemIds, setSelectingItemIds] = useState([]);
+
     const [organizing, setOrganizing] = useState(false); // para organizar a ordem
     const [orderedItems, setOrderedItems] = useState(items); // para guardar a ordem q esta sendo editada
     const [originalItems, setOriginalItems] = useState(items); // guardar a ordem anterior p/ poder cancelar
@@ -82,7 +83,7 @@ function Card({ title, items, tipo, onDelete, onUpdateOrder, expanded = false })
 
     function handleStartOrganizing() {
         setSelectingItem(false);
-        setSelectingItemId(null);
+        setSelectingItemIds([]);
 
         setOriginalItems(orderedItems);
         setOrganizing(true);
@@ -96,7 +97,7 @@ function Card({ title, items, tipo, onDelete, onUpdateOrder, expanded = false })
     }
 
     return (
-        <div className={`${styles.card} ${expanded ? styles.expanded : ""} ${selectingItem ? styles.selecting : ""} ${orderedItems ? styles.selecting : ""}`} >
+        <div className={`${styles.card} ${expanded ? styles.expanded : ""} ${selectingItem || organizing ? styles.selecting : ""}`} >
             <div className={styles.header}>
                 <h3>{title}</h3>
 
@@ -108,7 +109,7 @@ function Card({ title, items, tipo, onDelete, onUpdateOrder, expanded = false })
                         items={items} 
                         onStartSelecting={() => {
                             setOrganizing(false);
-                            setSelectingItemId(null);
+                            setSelectingItemIds([]);
                             setSelectingItem(true);
                         }}
                         onStartOrganizing={handleStartOrganizing}
@@ -134,19 +135,43 @@ function Card({ title, items, tipo, onDelete, onUpdateOrder, expanded = false })
                                     organizing={organizing}
                                 >
                                     {(handleProps) => (
-                                        <div className={styles.covers} key={item.id ?? item.title}>
+                                        <div 
+                                            className={styles.covers} 
+                                            key={item.id ?? item.title}
+                                            onClick={() => {
+                                                if (!selectingItem) return;
+
+                                                setSelectingItemIds(prev =>
+                                                    prev.includes(item.id)
+                                                        ? prev.filter(id => id !== item.id)
+                                                        : [...prev, item.id]
+                                                );
+                                            }} 
+                                        >
                                             <img
                                                 src={item.image}
                                                 alt={item.title}
-                                                onClick={() => {
-                                                    if (selectingItem) {
-                                                        setSelectingItemId(item.id);
-                                                    }
-                                                }}
                                                 style={{
-                                                    outline: selectingItemId === item.id ? "3px solid #8a67d8" : "none"
+                                                    outline: selectingItemIds.includes(item.id) ? "3px solid #8a67d8" : "none"
                                                 }}
                                             />
+
+                                            {selectingItem && (
+                                                <div 
+                                                    className={styles.removeHandle}
+                                                    onClick={(event) => {
+                                                        event.stopPropagation();
+
+                                                        setSelectingItemIds(prev =>
+                                                            prev.includes(item.id) // verifica se o item ja esta selecionado
+                                                                ? prev.filter(id => id !== item.id)
+                                                                : [...prev, item.id]
+                                                        );
+                                                    }}
+                                                >
+                                                    x
+                                                </div>
+                                            )}
 
                                             {organizing && (
                                                 <div 
@@ -163,12 +188,14 @@ function Card({ title, items, tipo, onDelete, onUpdateOrder, expanded = false })
                                 <p 
                                     key={item.id ?? item.titulo}
                                     onClick={() => {
-                                        if (selectingItem) {
-                                            setSelectingItemId(item.id);
-                                        }
+                                        setSelectingItemIds(prev =>
+                                            prev.includes(item.id)
+                                                ? prev.filter(id => id !== item.id)
+                                                : [...prev, item.id]
+                                        );
                                     }}
                                     style={{
-                                        outline: selectingItemId === item.id ? "3px solid #8a67d8" : "none"
+                                        outline: selectingItemIds === item.id ? "3px solid #8a67d8" : "none"
                                     }}
                                 >
                                     {item.titulo || item.title}
@@ -185,21 +212,30 @@ function Card({ title, items, tipo, onDelete, onUpdateOrder, expanded = false })
                         className={styles.cancelButton}
                         onClick={() => {
                         setSelectingItem(false);
-                        setSelectingItemId(null);
+                        setSelectingItemIds([]);
                     }}>
                         Cancelar
                     </button>
 
                     <button 
                         className={styles.removeButton}
-                        disabled={!selectingItemId}
+                        disabled={selectingItemIds.length === 0}
                         onClick={async () => {
-                            await onDelete(selectingItemId);
+                            const confirmar = window.confirm(
+                                `Tem certeza de que deseja remover ${selectingItemIds.length} itens da estante?`
+                            );
+
+                            if (!confirmar) return;
+
+                            for (const id of selectingItemIds) {
+                                await onDelete(id);
+                            }
+
                             setSelectingItem(false);
-                            setSelectingItemId(null);
+                            setSelectingItemIds([]);
                         }}
                     >
-                        Remover item
+                        Remover
                     </button>
                 </div>
             )}
