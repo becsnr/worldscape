@@ -43,7 +43,7 @@ function CardMenu({ size="normal", tipo, title, items, onStartSelecting, onStart
                     </button>
 
                     <button onClick={() => setOrganizationOpen(!organizationOpen)}>
-                        Organização &gt;
+                        Organização <span>&gt;</span>
                     </button>
 
                     {organizationOpen && (
