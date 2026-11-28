@@ -1,10 +1,13 @@
 import styles from "./Highlights.module.css";
 import { useOutletContext } from "react-router-dom";
+import { useState } from "react";
 
 import Card from "../components/cards/Card";
+import SearchModal from "../components/SearchModal";
 
 function Highlights(){
-    const { items, handleDeleteItem, handleUpdateOrder } = useOutletContext();
+    const { items, refreshItems, handleDeleteItem, handleUpdateOrder } = useOutletContext();
+    const [tipoModal, setTipoModal] = useState(null);
 
     const books = items.filter(item => item.tipo === "livro");
     const movies = items.filter(item => item.tipo === "filme");
@@ -19,6 +22,7 @@ function Highlights(){
                 tipo={"livro"} 
                 onDelete={handleDeleteItem}
                 onUpdateOrder={handleUpdateOrder}
+                onAdd={() => setTipoModal("livro")}
             />
 
             <Card 
@@ -27,6 +31,7 @@ function Highlights(){
                 tipo={"filme"} 
                 onDelete={handleDeleteItem}
                 onUpdateOrder={handleUpdateOrder}
+                onAdd={() => setTipoModal("filme")}
             />
 
             <Card 
@@ -35,6 +40,7 @@ function Highlights(){
                 tipo={"serie"} 
                 onDelete={handleDeleteItem}
                 onUpdateOrder={handleUpdateOrder}
+                onAdd={() => setTipoModal("serie")}
             />
 
             <Card 
@@ -43,7 +49,16 @@ function Highlights(){
                 tipo={"anime"} 
                 onDelete={handleDeleteItem}
                 onUpdateOrder={handleUpdateOrder}
-            />
+                onAdd={() => setTipoModal("anime")}
+                />
+
+            {tipoModal && (
+                <SearchModal 
+                    tipo={tipoModal}
+                    onClose={() => setTipoModal(null)}
+                    onItemAdded={refreshItems}
+                />
+            )}
         </div>
         
     )

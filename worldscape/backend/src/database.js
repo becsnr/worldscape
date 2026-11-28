@@ -94,8 +94,8 @@ const deleteUserById = db.prepare(`
 
 // add item para um usuário
 const addItem = db.prepare(`
-    INSERT INTO itemsUsers (titulo, tipo, isbn, autor, user_id)
-    VALUES (?, ?, ?, ?, ?)
+    INSERT INTO itemsUsers (titulo, tipo, isbn, autor, user_id, position)
+    VALUES (?, ?, ?, ?, ?, ?)
 `);
 
 // verificar se tem item repetido
@@ -117,6 +117,13 @@ const updateItem = db.prepare(`
     UPDATE itemsUsers
     SET titulo = ?, tipo = ?
     WHERE id = ? AND user_id = ?
+`);
+
+// descobrir a ultima posição de um item na estante
+const getLastPosition = db.prepare(`
+   SELECT MAX(position) AS lastPosition
+   FROM itemsUsers
+   WHERE user_id = ? AND tipo = ? 
 `);
 
 // atualizar posição dos items
@@ -141,6 +148,7 @@ module.exports = {
     addItem,
     verificarItem,
     getItemsUsersByUserId,
+    getLastPosition,
     updateItem,
     updatePosition,
     deleteItem,

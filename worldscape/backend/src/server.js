@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
 
-const { db, addUser, getUserByNick, getUserById, deleteUserById, addItem, verificarItem, getItemsUsersByUserId, updateItem, updatePosition, deleteItem, addBookToCatalog, getBooksFromCatalog } = require("./database");
+const { db, addUser, getUserByNick, getUserById, deleteUserById, addItem, verificarItem, getItemsUsersByUserId, updateItem, updatePosition, deleteItem, addBookToCatalog, getBooksFromCatalog, getLastPosition } = require("./database");
 
 const JWT_SECRET = "minha-chave-secreta";
 
@@ -232,6 +232,10 @@ app.post("/itemsUsers", verificarToken, (req, res) => {
 
     const userId = req.usuario.id;
 
+    const lastPosition = getLastPosition.get(userId,tipoNormalizado);
+
+    const newPosition = (lastPosition.lastPosition ?? -1) + 1
+
     const itemExistente = verificarItem.get(
         titulo.trim(),
         tipoNormalizado,
@@ -249,7 +253,8 @@ app.post("/itemsUsers", verificarToken, (req, res) => {
             tipoNormalizado, 
             isbn || null, 
             autor || null,
-            userId
+            userId,
+            newPosition
         );
 
     res.json({

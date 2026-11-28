@@ -31,7 +31,7 @@ function SortableCover({ item, children, organizing }) {
     )
 }
 
-function Card({ title, items, tipo, onDelete, onUpdateOrder, expanded = false }) {
+function Card({ title, items, tipo, onDelete, onUpdateOrder, onAdd, expanded = false }) {
     const [selectingItem, setSelectingItem] = useState(false); // para excluir
     const [selectingItemIds, setSelectingItemIds] = useState([]);
 
@@ -102,7 +102,7 @@ function Card({ title, items, tipo, onDelete, onUpdateOrder, expanded = false })
                 <h3>{title}</h3>
 
                 <div className={styles.cardButtons}>
-                    <AddButton />
+                    <AddButton onClick={onAdd} />
                     <CardMenu 
                         tipo={tipo} 
                         title={title} 
